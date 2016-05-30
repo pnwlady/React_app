@@ -11,3 +11,6 @@
   npm start
   ```
   4 In your browser go to 'localhost:3000' (or whatever your environmental variable is).
+
+### Tutorial
+I used: https://medium.com/front-end-developers/handcrafting-an-isomorphic-redux-application-with-love-40ada4468af4#.r0nmr2xa4
