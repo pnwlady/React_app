@@ -10,4 +10,4 @@
   ```
   npm start
   ```
-  4 In your browswer go to 'localhost:3000' (or whatever your environmental variable is).
+  4 In your browser go to 'localhost:3000' (or whatever your environmental variable is).

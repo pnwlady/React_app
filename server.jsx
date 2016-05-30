@@ -26,6 +26,7 @@ app.use((req, res) => {
           <RoutingContext {...renderProps} />
       </Provider>
     );
+    const initalState = store.getState();
 
     const componentHTML = renderToString(InitialComponent);
     const HTML = `
@@ -34,6 +35,9 @@ app.use((req, res) => {
       <head>
         <meta charset="utf-8">
         <title>Isomorphic Redux Demo</title>
+        <script type="application/javascript">
+          window.__INITIAL_STATE__ = ${JSON.stringify(initalState)};
+        </script> 
       </head>
       <body>
         <div id="react-view">${componentHTML}</div>
