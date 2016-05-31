@@ -2,7 +2,6 @@
 
 require('babel-core/register')({});
 require('babel-polyfill');
-process.env.NODE_ENV = 'production';
 
 var server = require('./server').default;
 
