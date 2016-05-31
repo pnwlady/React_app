@@ -1,6 +1,6 @@
-
 import express                   from 'express';
 import React                     from 'react';
+import { renderToString }        from 'react-dom/server'
 import { RoutingContext, match } from 'react-router';
 import createLocation            from 'history/lib/createLocation';
 import routes                    from 'routes';
@@ -10,15 +10,16 @@ import promiseMiddleware         from 'lib/promiseMiddleware';
 import fetchComponentData        from 'lib/fetchComponentData';
 import { createStore,
          combineReducers,
-         applyMiddleware } from 'redux';
+         applyMiddleware }       from 'redux';
+import path                      from 'path';
 
 const app = express();
 
-// So the example quote unquote 'production mode' works
-import fs from 'fs';
-app.use('/bundle.js', function (req, res) {
-  return fs.createReadStream('./dist/bundle.js').pipe(res);
-});
+if (process.env.NODE_ENV !== 'production') {
+  require('./webpack.dev').default(app);
+}
+
+app.use(express.static(path.join(__dirname, 'dist')));
 
 app.use( (req, res) => {
   const location = createLocation(req.url);
@@ -37,13 +38,11 @@ app.use( (req, res) => {
     function renderView() {
       const InitialView = (
         <Provider store={store}>
-          {() =>
-            <RoutingContext {...renderProps} />
-          }
+          <RoutingContext {...renderProps} />
         </Provider>
       );
 
-      const componentHTML = React.renderToString(InitialView);
+      const componentHTML = renderToString(InitialView);
 
       const initialState = store.getState();
 
@@ -53,6 +52,7 @@ app.use( (req, res) => {
         <head>
           <meta charset="utf-8">
           <title>Redux Demo</title>
+
           <script>
             window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
           </script>
